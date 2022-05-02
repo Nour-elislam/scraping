@@ -25,18 +25,18 @@ for job in jobs:
         list_of_countries.append(job.find_all('p'))
 print(list_of_countries)
 
+# Get name and date of data source
 source_date = str(list_of_countries[0][1])
-
 date_source, name_source = get_source_date(source_date)
 print("date",date_source)
-print(list_of_countries[0][4])
-print(list_of_countries[0][8])
-print(type(list_of_countries))
-#url_source = jobs.find('h5',class_= 'section-heading')
-#print(url_source)
-#print(jobs.p)
 
-#print (soup.prettify())
+# Get black list
+country_black_list = get_country_list(list_of_countries[0][4])
+country_gris_list = get_country_list(list_of_countries[0][8])
+
+print(country_gris_list)
+print(country_black_list)
+
 
 
 
