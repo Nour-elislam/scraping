@@ -43,7 +43,8 @@ logging.log(20, f' Successfully scraping country black list')
 
 # Create parse Data in df
 df_black_list = pd.DataFrame(country_black_list, columns=['PAYS'])
-df_black_list['CLASSIFICATION'] = 'black list'
+df_black_list['C_RISK'] = 'black list'
+#print(df_black_list.head())
 
 # Get grey list
 country_greys_list = get_country_list(list_of_countries[0][8])
@@ -52,7 +53,9 @@ logging.log(20, f' Successfully scraping country grey list')
 # Create parse Data in df
 df_grey_list = pd.DataFrame(country_greys_list, columns=['PAYS'])
 df_grey_list['C_RISK'] = 'grey list'
+#print(df_grey_list.head())
 df = pd.concat([df_grey_list, df_black_list],ignore_index=True)
+#print(df[df.PAYS == 'Iran'])
 
 # Normalise date, name
 date_normalized = dt.datetime.strptime(str(date_source.replace(' ', '-')), "%B-%Y")
