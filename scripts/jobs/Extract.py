@@ -1,34 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 import time
 import csv
 import json
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import requests
 import pycountry
 from bs4 import BeautifulSoup
 
-gecko_path = "C:/Users/nour.khettache/PycharmProjects/scraping/venv/scripts/geckodriver.exe"
-chrome_path= "C:/Users/nour.khettache/PycharmProjects/scraping/venv/scripts/chromedriver.exe"
-
-# Get Firefox driver
-"""
-options = webdriver.firefox.options.Options()
-options.headless = False
-driver = webdriver.Firefox(options = options, executable_path = gecko_path)
-"""
-"""
-# Get Chrome driver
-options = Options()
-options.add_argument("start-maximized")
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
-driver.get("https://www.google.com")
-"""
+from scripts.utils.utils_extract import *
 # Get user agent
 user_agent = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:55.0) Gecko/20100101 Firefox/55.0',
@@ -40,10 +18,25 @@ url = 'https://www.knowyourcountry.com/fatf-aml-list/'
 response = requests.get(url,headers=user_agent)
 
 soup = BeautifulSoup(response.text, 'lxml')
-jobs = soup.find_all('div',class_ = 'elementor-widget-container').find_all('p')
-print(type(jobs))
+jobs = soup.find_all('div',class_ = 'elementor-widget-container')
+list_of_countries = []
 for job in jobs:
-    paragraphe = jobs.find_all('p').text
+    for p in job:
+        list_of_countries.append(job.find_all('p'))
+print(list_of_countries)
+
+source_date = str(list_of_countries[0][1])
+
+date_source, name_source = get_source_date(source_date)
+print("date",date_source)
+print(list_of_countries[0][4])
+print(list_of_countries[0][8])
+print(type(list_of_countries))
+#url_source = jobs.find('h5',class_= 'section-heading')
+#print(url_source)
+#print(jobs.p)
+
+#print (soup.prettify())
 
 
 
