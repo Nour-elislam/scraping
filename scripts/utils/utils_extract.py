@@ -1,6 +1,7 @@
 import logging
 import os
 
+
 def clear_paragraph(paragraph):
     """
     clear paragraph from p balise
@@ -52,23 +53,4 @@ def get_country_list(str_input):
     country_list = country.split("<br/>")
     return country_list
 
-def create_dir(path ="C:/scraping/input"):
-    """
-    Create a new directory
-    :param path:
-    :type path:
-    :return:
-    :rtype:
-    """
 
-    # Check whether the specified path exists or not
-    isExist = os.path.exists(path)
-
-    if not isExist:
-        try:
-            # Create a new directory because it does not exist
-            os.makedirs(path)
-            logging.log(20,"The new directory is created!")
-
-        except Exception as e:
-            logging.log(40, "Cannot create directory please check path in conf file")

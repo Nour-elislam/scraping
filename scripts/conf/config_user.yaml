@@ -1,0 +1,15 @@
+# define os user
+
+#system user
+windows_prefix: 'C:/'
+linux_prefix: 'tmp/'
+
+# paths
+input_path: 'scraping/input'
+output_path: 'scraping/data'
+
+# csv config
+delimitor: ''
+encoding: utf-8
+na_values: ['', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan', '1.#IND', '1.#QNAN', '<NA>', 'N/A', 'NULL', 'NaN', 'n/a', 'null']
+separator: ';'
