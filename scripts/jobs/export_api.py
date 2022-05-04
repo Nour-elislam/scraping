@@ -50,7 +50,7 @@ class pays(Resource):
         args = parser.parse_args()  # parse arguments to dictionary
 
         # read our CSV
-        data = pd.read_csv('C_PAYS.csv')
+        data = pd.read_csv(file)
 
         # check if Id already exists
         if args['ID'] in list(data['ID']):
