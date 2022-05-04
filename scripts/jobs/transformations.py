@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import logging
 import re
 import glob
+import numpy as np
 
 from scripts.utils.utils_extract import *
 from scripts.utils.utils_file import *
@@ -31,6 +32,7 @@ output_path_path_file = create_file_path(output_path, config_user)
 
 all_files = glob.glob(input_path_file + os.path.sep + "*.csv")
 
+# loop for concat if others csv exist
 for file in all_files:
     file_name = file.split('/')[-1].split('\\')[-1]
 
@@ -47,7 +49,7 @@ for file in all_files:
                        encoding=config_user['encoding'],
                        header=0,
                        names=None,
-                       dtype_dict={"str": "str"},
+                       dtype_dict={"int": "int", "str": "str"},
                        na_values=config_user['na_values']
                        )
 
@@ -60,9 +62,13 @@ for file in all_files:
     df['C_SOURCE'] = name_source
     df['DT_SOURCE'] = date_source
 
+    df['ID'] = pd.RangeIndex(1, 1 + len(df))
+
+    # reorder columns
+    #df = df[["ID","PAYS","C_RISK","C_DATE","C_SOURCE","DT_SOURCE"]]
+
     # Create directory input
     create_dir(output_path_path_file)
-
 
     # write to csv
     df.to_csv(path_or_buf=output_path_path_file + os.path.sep + file_name, sep=';', encoding='utf-8', index=False)
