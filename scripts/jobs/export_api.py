@@ -34,23 +34,38 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class pays(Resource):
+class Pays(Resource):
     def get(self):
-        data = pd.read_csv(file)  # read local CSV
-        return {'data': data.to_dict()}, 200  # return data dict and 200 OK
+        # read local CSV
+        data = read_csv_file(file, separator=config_user['separator'],
+                           delimitor=config_user['delimitor'],
+                           encoding=config_user['encoding'],
+                           header=0,
+                           names=None,
+                           dtype_dict={"int": "int", "str": "str"},
+                           na_values=config_user['na_values']
+                           ).set_index('PAYS').T.to_dict('list')
+        return {'knowyourcountry.com': data}, 200  # return data dict and 200 OK
 
     def post(self):
 
         # initialize parser
         parser = reqparse.RequestParser()
         parser.add_argument('ID', required=True, type=int)
-        parser.add_argument('PAYS', required=True)
-        parser.add_argument('C_RISK', required=True)
+        parser.add_argument('PAYS', required=False)
+        parser.add_argument('C_RISK', required=False)
 
         args = parser.parse_args()  # parse arguments to dictionary
 
         # read our CSV
-        data = pd.read_csv(file)
+        data = read_csv_file(file, separator=config_user['separator'],
+                             delimitor=config_user['delimitor'],
+                             encoding=config_user['encoding'],
+                             header=0,
+                             names=None,
+                             dtype_dict={"int": "int", "str": "str"},
+                             na_values=config_user['na_values']
+                             ).set_index('PAYS').T.to_dict('list')
 
         # check if Id already exists
         if args['ID'] in list(data['ID']):
@@ -134,7 +149,7 @@ class pays(Resource):
             }
 
 
-api.add_resource(pays, '/data')
+api.add_resource(Pays, '/data')
 
 if __name__ == '__main__':
     app.run()  # run our Flask app

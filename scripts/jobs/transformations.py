@@ -55,14 +55,15 @@ for file in all_files:
 
     # Get name and date of data source from filename
     date_source = file_name.split("_")[-1].split('.')[0]
+    date_normalized = dt.datetime.strptime(date_source,"%Y%m%d")
     name_source = file_name.split("_")[0].split('.')[0]
     logging.log(20, f'Add new columns of source')
 
     # add columns source and date of source
     df['C_SOURCE'] = name_source
-    df['DT_SOURCE'] = date_source
+    df['DT_SOURCE'] = date_normalized.strftime("%Y-%m-%d")
 
-    df['ID'] = pd.RangeIndex(1, 1 + len(df))
+    #df['ID'] = pd.RangeIndex(1, 1 + len(df))
 
     # reorder columns
     #df = df[["ID","PAYS","C_RISK","C_DATE","C_SOURCE","DT_SOURCE"]]
