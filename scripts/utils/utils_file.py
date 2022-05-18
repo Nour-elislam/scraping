@@ -3,6 +3,7 @@ import logging
 import os
 from pandas import DataFrame, read_csv, read_parquet, DataFrame
 
+
 def read_yaml_file(file_path, logger=None):
     """
     Open YAML file and return a dict type object
@@ -132,7 +133,7 @@ def read_csv_file(file_path, separator=',', delimitor=None, encoding=None, heade
             dataframe = read_csv(file_path, sep=separator, dtype=dtype_dict, header=header, names=names,
                                  encoding=encoding, na_values=na_values, keep_default_na=False, index_col=None)
 
-        logging.log(20,f'successfully read csv file {file_path}')
+        logging.log(20, f'successfully read csv file {file_path}')
 
         # Return the panda DataFrame
         return dataframe
@@ -145,3 +146,45 @@ def read_csv_file(file_path, separator=',', delimitor=None, encoding=None, heade
 
     except Exception as err:
         raise Exception(f'{err}')
+
+
+def write_parquet_file(dataframe, dir_path, file_name, logger=None):
+    """
+    Compress dataframe into parquet files
+
+    :param dataframe: Dataframe to compress
+    :type dataframe: pandas.DataFrame
+    :param dir_path: Path of the folder where to store files
+    :type dir_path: str
+    :param file_name: Name of the compressed files in the folder
+    :type file_name: str
+    :param logger: Logger instance to use
+    :type logger: Logger
+    """
+
+    f_name = 'write_parquet_file'
+
+    if dir_path is not None and len(dir_path) == 0:
+        raise TypeError(f'dir_path should not be empty')
+
+    if file_name is not None and len(file_name) == 0:
+        raise TypeError(f'file_name should not be empty')
+
+    filename = "{}/{}.parquet".format(dir_path, file_name)
+
+    try:
+        logging.log(10, 'Function write parquet started')
+
+        with open(filename, 'wb') as fileHandler:
+            dataframe.to_parquet(fileHandler, engine='pyarrow', compression='snappy')
+
+    except FileNotFoundError as err:
+        logging.log(40, f'file not found {filename} ')
+        raise err
+
+    except Exception as err:
+        logging.log(40, f'canot write file {filename} ')
+        raise err
+
+    logging.log(10, f'write successfully {filename} to parquet file')
+    return filename

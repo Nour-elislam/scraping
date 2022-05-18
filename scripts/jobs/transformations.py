@@ -30,6 +30,10 @@ input_path_file = create_file_path(input_path, config_user)
 output_path = config_user.get('output_path')
 output_path_path_file = create_file_path(output_path, config_user)
 
+# Get file path of transformations
+transformations_path = config_user.get('transformations_path')
+transformations_path_path_file = create_file_path(transformations_path, config_user)
+
 all_files = glob.glob(input_path_file + os.path.sep + "*.csv")
 
 # loop for concat if others csv exist
@@ -70,7 +74,9 @@ for file in all_files:
 
     # Create directory input
     create_dir(output_path_path_file)
+    create_dir(transformations_path_path_file)
 
     # write to csv
     df.to_csv(path_or_buf=output_path_path_file + os.path.sep + file_name, sep=';', encoding='utf-8', index=False)
     logging.log(20, f'Successfully write csv {output_path_path_file + os.path.sep + file_name} ')
+    write_parquet_file(df,transformations_path_path_file,'transformations_data')

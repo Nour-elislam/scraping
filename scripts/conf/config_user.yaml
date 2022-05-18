@@ -7,6 +7,8 @@ linux_prefix: 'tmp/'
 # paths
 input_path: 'scraping/input'
 output_path: 'scraping/data'
+transformations_path: 'scraping/transformations'
+export_path: 'scrapping/export'
 
 # csv config
 delimitor: ''
